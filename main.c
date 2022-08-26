@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -20,8 +21,8 @@ typedef struct Player{
 typedef struct Ball{
 	int xpos;
 	int ypos;
-	int vx;
-	int vy;
+	float vx;
+	float vy;
 }Ball;
 
 typedef enum{
@@ -71,13 +72,14 @@ void UpdateBallPos(Ball* b, Player* p1, Player* p2)
 		b->vx = -b->vx;
 		b->vy = -b->vy;
 	}
-	if(b->xpos == p2->xpos && b->ypos >= p2->ypos && b->ypos <= p2->ypos+PLAYER_HEIGHT)
+
+	if(b->xpos == p2->xpos-BALL_SIZE && b->ypos >= p2->ypos && b->ypos <= p2->ypos+PLAYER_HEIGHT)
 	{
 		b->vx = -b->vx;
 		b->vy = -b->vy;
 	}
-	b->xpos += b->vx;
-	b->ypos += b->vy;
+	b->xpos += (int)b->vx;
+	b->ypos += (int)b->vy;
 }
 
 bool MainLoop(SDL_Window* win, SDL_Surface* surf)
@@ -94,7 +96,11 @@ bool MainLoop(SDL_Window* win, SDL_Surface* surf)
 	player2.xpos = PLAYER2_INIT_X;
 	player2.ypos = PLAYER2_INIT_Y;
 
-	Ball ball = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10, 5};
+	srand(time(0));
+	float initial_vx = (float)rand()/(float)(RAND_MAX) * 1.0f + 0.5f;
+	float initial_vy = (float)rand()/(float)(RAND_MAX) * 1.0f + 0.5f;
+	printf("%f, %f\n", initial_vx, initial_vy);
+	Ball ball = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2, initial_vx, initial_vy};
 
 	while (!quit)
 	{
