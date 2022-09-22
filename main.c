@@ -97,9 +97,9 @@ bool MainLoop(SDL_Window* win, SDL_Surface* surf)
 	player2.ypos = PLAYER2_INIT_Y;
 
 	srand(time(0));
-	float initial_vx = (float)rand()/(float)(RAND_MAX) * 1.0f + 0.5f;
-	float initial_vy = (float)rand()/(float)(RAND_MAX) * 1.0f + 0.5f;
-	printf("%f, %f\n", initial_vx, initial_vy);
+	int initial_vx = rand()%2 + 1;
+	int initial_vy = rand()%2 + 1;
+	printf("%d, %d\n", initial_vx, initial_vy);
 	Ball ball = {SCREEN_WIDTH/2, SCREEN_HEIGHT/2, initial_vx, initial_vy};
 
 	while (!quit)
